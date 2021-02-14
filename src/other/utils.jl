@@ -79,7 +79,8 @@ end
 if isdefined(Base, :ComposedFunction) # Julia >= 1.6.0-DEV.85
     using Base: ComposedFunction
 else
-    using Compat: ComposedFunction
+    using Compat
+    isdefined(Compat, :ComposedFunction) && using Compat: ComposedFunction
 end
 
-funname(c::ComposedFunction) = Symbol(funname(c.outer), :_, funname(c.inner))
+isdefined(@__MODULE__, :ComposedFunction) && (funname(c::ComposedFunction) = Symbol(funname(c.outer), :_, funname(c.inner)))
